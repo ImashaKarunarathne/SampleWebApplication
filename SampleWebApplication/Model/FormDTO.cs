@@ -7,6 +7,8 @@ namespace SampleWebApplication.Model
     {
         public required string Id { get; set; }
 
+        public required string ProgramId { get; set; }
+
         public List<QuestionDTO> FixedQuestions { get; set; }
 
         public List<CustomQuestionDTO>? CustomQuestions { get; set; }

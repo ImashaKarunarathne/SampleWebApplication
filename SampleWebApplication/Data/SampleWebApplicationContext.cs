@@ -21,5 +21,6 @@ namespace SampleWebApplication.Data
         public DbSet<SampleWebApplication.Model.FormDTO> FormDTO { get; set; } = default!;
 
         public DbSet<SampleWebApplication.Model.CandidateDTO> CandidateDTO { get; set; } = default!;
+        public DbSet<SampleWebApplication.Model.FormAnswersDTO> FormAnswersDTO { get; set; } = default!;
     }
 }
