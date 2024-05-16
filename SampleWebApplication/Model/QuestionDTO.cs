@@ -2,12 +2,14 @@
 
 namespace SampleWebApplication.Model
 {
-    public class CustomQuestionDTO
+    public class QuestionDTO
     {
         public required QuestionType Type { get; set; }
 
         public required string Label { get; set; }
 
-        public List<string>? Options { get; set; }
+        public bool IsVisible { get; set; }
+
+        public bool IsInternal { get; set; }
     }
 }
