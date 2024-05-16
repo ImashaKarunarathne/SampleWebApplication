@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SampleWebApplication.Data;
 using SampleWebApplication.Model;
+using SampleWebApplication.Domain;
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
+using SampleWebApplication.Services;
 
 namespace SampleWebApplication.Controllers
 {
@@ -15,31 +18,19 @@ namespace SampleWebApplication.Controllers
     public class ProgramController : ControllerBase
     {
         private readonly SampleWebApplicationContext _context;
+        private IProgramService _programService;
 
-        public ProgramController(SampleWebApplicationContext context)
+        public ProgramController( IProgramService programService , SampleWebApplicationContext context)
         {
+            _programService = programService;
             _context = context;
-        }
-
-        // GET: api/Program
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProgramDTO>>> GetProgramDTO()
-        {
-            return await _context.ProgramDTO.ToListAsync();
         }
 
         // GET: api/Program/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ProgramDTO>> GetProgramDTO(string id)
         {
-            var programDTO = await _context.ProgramDTO.FindAsync(id);
-
-            if (programDTO == null)
-            {
-                return NotFound();
-            }
-
-            return programDTO;
+            return await _programService.GetProgramById(id);
         }
 
         // PUT: api/Program/5
@@ -78,24 +69,7 @@ namespace SampleWebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<ProgramDTO>> PostProgramDTO(ProgramDTO programDTO)
         {
-            _context.ProgramDTO.Add(programDTO);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProgramDTOExists(programDTO.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetProgramDTO", new { id = programDTO.Id }, programDTO);
+            return await _programService.CreateProgram(programDTO);
         }
 
         // DELETE: api/Program/5

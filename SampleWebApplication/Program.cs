@@ -53,3 +53,12 @@ static CosmosClient InitializeCosmosClientInstance(IConfigurationSection configu
     string primaryKey = configurationSection.GetSection("PrimaryKey").Value;  
     return new CosmosClient(endpointUri, primaryKey);
 }
+
+static Container InitializeCosmosContainer()
+{
+    var cosmosClient = new CosmosClient("<connection-string>");
+    var database = cosmosClient.GetDatabase("<database-name>");
+    var container = database.GetContainer("<container-name>");
+
+    return container;
+}
