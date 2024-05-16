@@ -5,6 +5,8 @@ namespace SampleWebApplication.Model
 {
     public class FormDTO
     {
+        public required string Id { get; set; }
+
         public List<QuestionDTO> FixedQuestions { get; set; }
 
         public List<CustomQuestionDTO>? CustomQuestions { get; set; }
