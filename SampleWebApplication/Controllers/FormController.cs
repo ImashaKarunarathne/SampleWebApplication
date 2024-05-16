@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SampleWebApplication.Data;
+using SampleWebApplication.Domain;
 using SampleWebApplication.Model;
+using SampleWebApplication.Shared;
 
 namespace SampleWebApplication.Controllers
 {
@@ -15,9 +17,11 @@ namespace SampleWebApplication.Controllers
     public class FormController : ControllerBase
     {
         private readonly SampleWebApplicationContext _context;
+        private IFormService _formService;
 
-        public FormController(SampleWebApplicationContext context)
+        public FormController(IFormService formService, SampleWebApplicationContext context)
         {
+            _formService = formService;
             _context = context;
         }
 
@@ -32,45 +36,16 @@ namespace SampleWebApplication.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<FormDTO>> GetFormDTO(string id)
         {
-            var formDTO = await _context.FormDTO.FindAsync(id);
-
-            if (formDTO == null)
-            {
-                return NotFound();
-            }
-
-            return formDTO;
+            return await _formService.GetFormById(id);
         }
 
         // PUT: api/Form/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFormDTO(string id, FormDTO formDTO)
+        public async Task<ActionResult<FormDTO>> PutFormDTO(string id, FormDTO formDTO)
         {
-            if (id != formDTO.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(formDTO).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FormDTOExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return await _formService.UpdateForm(id , formDTO);
         }
 
         // POST: api/Form
@@ -78,24 +53,7 @@ namespace SampleWebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult<FormDTO>> PostFormDTO(FormDTO formDTO)
         {
-            _context.FormDTO.Add(formDTO);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (FormDTOExists(formDTO.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetFormDTO", new { id = formDTO.Id }, formDTO);
+            return await _formService.CreateForm(formDTO);
         }
 
         // DELETE: api/Form/5

@@ -37,8 +37,6 @@ namespace SampleWebApplication.Services
 
         public async Task<ActionResult<ProgramDTO>> CreateProgram(ProgramDTO programDTO)
         {
-            OperationResult result = new OperationResult();
-
             ActionResult<ProgramDTO> actionResult = new ActionResult<ProgramDTO>(programDTO);
 
             var item = new { id = programDTO.Id, name = programDTO.Name, description = programDTO.Description };
