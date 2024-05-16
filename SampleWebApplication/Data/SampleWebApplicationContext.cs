@@ -15,8 +15,11 @@ namespace SampleWebApplication.Data
         }
 
         public DbSet<SampleWebApplication.Model.EmployerDTO> EmployerDTO { get; set; } = default!;
+
         public DbSet<SampleWebApplication.Model.ProgramDTO> ProgramDTO { get; set; } = default!;
+
         public DbSet<SampleWebApplication.Model.FormDTO> FormDTO { get; set; } = default!;
+
         public DbSet<SampleWebApplication.Model.CandidateDTO> CandidateDTO { get; set; } = default!;
     }
 }
